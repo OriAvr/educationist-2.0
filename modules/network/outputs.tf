@@ -3,6 +3,11 @@ output "vpc_id" {
   description = "The ID of the VPC"
 }
 
+output "vpc_cidr" {
+  value       = aws_vpc.this.cidr_block
+  description = "The ID of the VPC"
+}
+
 output "public_subnet_id" {
   value       = aws_subnet.public.id
   description = "The ID of the public subnet"

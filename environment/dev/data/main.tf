@@ -1,11 +1,3 @@
-data "aws_ssm_parameter" "database_subnet_id" {
-  name = "/network/my_vpc/subnets/database_subnet_id"
-}
-
-data "aws_ssm_parameter" "private_subnet_id" {
-  name = "/network/my_vpc/subnets/private_subnet_id"
-}
-
 module "my_rds_instance" {
   source = "../../../modules/data/rds"
 
@@ -29,6 +21,21 @@ module "my_rds_instance" {
   }
 }
 
-module "public_sg" {
-  source = "https://github.com/terraform-aws-modules/terraform-aws-security-group"
+module "private_sg" {
+  source = "github.com/terraform-aws-modules/terraform-aws-security-group"
+
+  name        = var.rds_sg_name
+  description = "Security group for user-service with custom ports open within VPC, and PostgreSQL publicly open"
+  vpc_id      = data.aws_ssm_parameter.vpc_id.value
+
+  // Allow inbound traffic from within VPC CIDR
+  ingress_with_cidr_blocks = [
+    {
+      from_port   = 0
+      to_port     = 0
+      protocol    = "-1" // -1 means all protocols
+      description = "Allow all inbound traffic from within VPC"
+      cidr_blocks = data.aws_ssm_parameter.vpc_cidr_block.value
+    }
+  ]
 }

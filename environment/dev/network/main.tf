@@ -5,15 +5,4 @@ module "my_vpc" {
   flow_logs_bucket_name = var.flow_logs_bucket_name
 }
 
-resource "aws_ssm_parameter" "database_subnet_id" {
-  name  = "/network/my_vpc/subnets/database_subnet_id"
-  type  = "String"
-  value = module.my_vpc.database_subnet_id
-}
-
-resource "aws_ssm_parameter" "private_subnet_id" {
-  name  = "/network/my_vpc/subnets/private_subnet_id"
-  type  = "String"
-  value = module.my_vpc.private_subnet_id
-}
 
