@@ -98,6 +98,21 @@ module "private_sg" {
       protocol    = "-1" // -1 means all protocols
       description = "Allow all inbound traffic from within VPC"
       cidr_blocks = data.aws_ssm_parameter.vpc_cidr_block.value
+      }, {
+      from_port                = 0
+      to_port                  = 0
+      protocol                 = "-1"
+      description              = "Allow all inbound traffic from within VPC"
+      source_security_group_id = module.public_sg.security_group_id
+    }
+  ]
+  egress_with_cidr_blocks = [
+    {
+      from_port   = 0
+      to_port     = 0
+      protocol    = "-1"
+      description = "Allow all outbound traffic"
+      cidr_blocks = "0.0.0.0/0"
     }
   ]
 }

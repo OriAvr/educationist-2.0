@@ -15,13 +15,14 @@ module "my_rds_instance" {
   create_db_subnet_group = true
   db_subnet_group_name   = "rds-subnet-group"
   subnet_ids             = [data.aws_ssm_parameter.database_subnet_id.value, data.aws_ssm_parameter.private_subnet_id.value]
+  vpc_security_group_ids = [module.rds_sg.security_group_id]
 
   tags = {
     Environment = "development"
   }
 }
 
-module "private_sg" {
+module "rds_sg" {
   source = "github.com/terraform-aws-modules/terraform-aws-security-group"
 
   name        = var.rds_sg_name
