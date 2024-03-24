@@ -1,3 +1,4 @@
+/*
 output "vpc_id" {
   value       = aws_vpc.this.id
   description = "The ID of the VPC"
@@ -62,4 +63,4 @@ output "flow_log_role_arn" {
   value       = aws_iam_role.flow_log_role.arn
   description = "The ARN of the IAM role for VPC flow logs"
 }
-
+*/

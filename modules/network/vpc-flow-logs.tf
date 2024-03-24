@@ -1,4 +1,4 @@
-module "my_s3_bucket" {
+/*module "my_s3_bucket" {
   source                  = "../data/s3"
   bucket_name             = var.flow_logs_bucket_name
   bucket_sse_alg          = var.bucket_sse_alg
@@ -29,3 +29,4 @@ resource "aws_flow_log" "vpc_flow_log" {
   traffic_type         = "ALL"
   vpc_id               = aws_vpc.this.id
 }
+*/

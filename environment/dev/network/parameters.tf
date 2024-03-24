@@ -1,3 +1,4 @@
+/*
 resource "aws_ssm_parameter" "vpc_id" {
   name  = "/my_vpc/vpc_id"
   type  = "String"
@@ -27,3 +28,4 @@ resource "aws_ssm_parameter" "vpc_cidr_block" {
   type  = "String"
   value = module.my_vpc.vpc_cidr
 }
+*/

@@ -1,4 +1,27 @@
-# VPC
+module "my_vpc" {
+  source = "github.com/terraform-aws-modules/terraform-aws-vpc"
+  name   = var.name
+  cidr   = var.cidr
+
+  azs             = var.azs
+  private_subnets = var.private_subnets
+  public_subnets  = var.public_subnets
+
+  enable_nat_gateway     = var.enable_nat_gateway
+  single_nat_gateway     = var.single_nat_gateway
+  one_nat_gateway_per_az = var.one_nat_gateway_per_az
+
+  enable_vpn_gateway        = false
+  enable_flow_log           = true
+  flow_log_destination_type = "s3"
+  flow_log_destination_arn  = var.flow_logs_bucket_arn
+
+  tags = var.tags
+}
+
+
+
+/*# VPC
 resource "aws_vpc" "this" {
   cidr_block           = var.cidr
   instance_tenancy     = var.instance_tenancy
@@ -219,3 +242,4 @@ resource "aws_vpc_endpoint" "s3" {
 }
 
 
+*/
