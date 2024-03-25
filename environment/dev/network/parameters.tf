@@ -22,3 +22,14 @@ resource "aws_ssm_parameter" "vpc_default_security_group_id" {
   value = module.my_vpc.default_security_group_id
 }
 
+resource "aws_ssm_parameter" "public_subnets_id" {
+  name  = "/my_vpc/subnets/public_subnets_id"
+  type  = "String"
+  value = module.my_vpc.public_subnets[0]
+}
+
+resource "aws_ssm_parameter" "private_subnets_id" {
+  name  = "/my_vpc/subnets/private_subnets_id"
+  type  = "String"
+  value = module.my_vpc.private_subnets[0]
+}

@@ -23,6 +23,17 @@ output "vpc_cidr_block" {
   value       = module.my_vpc.vpc_cidr_block
 }
 
+output "public_subnets" {
+  description = "The public subnet IDs"
+  value       = module.my_vpc.public_subnets
+}
+
+output "private_subnets" {
+  description = "The private subnet IDs"
+  value       = module.my_vpc.private_subnets
+}
+
+
 /*
 output "s3_vpc_endpoint_id" {
   description = "The ID of the S3 VPC Endpoint"

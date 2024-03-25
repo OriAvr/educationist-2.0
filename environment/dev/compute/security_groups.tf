@@ -1,44 +1,3 @@
-module "my_key_pair" {
-  source             = "github.com/terraform-aws-modules/terraform-aws-key-pair"
-  key_name           = var.key_pair_name
-  create_private_key = true
-}
-
-module "public_instance" {
-  source = "github.com/terraform-aws-modules/terraform-aws-ec2-instance"
-
-  name                        = var.public_instance_name
-  instance_type               = var.instance_type
-  key_name                    = var.key_pair_name
-  monitoring                  = true
-  vpc_security_group_ids      = [module.public_sg.security_group_id]
-  subnet_id                   = data.aws_ssm_parameter.public_subnet_id.value
-  associate_public_ip_address = true
-
-  tags = {
-    Terraform   = "true"
-    Environment = "dev"
-  }
-  depends_on = [module.my_key_pair]
-}
-
-module "private_instance" {
-  source = "github.com/terraform-aws-modules/terraform-aws-ec2-instance"
-
-  name                   = var.private_instance_name
-  instance_type          = var.instance_type
-  key_name               = var.key_pair_name
-  monitoring             = true
-  vpc_security_group_ids = [module.private_sg.security_group_id]
-  subnet_id              = data.aws_ssm_parameter.private_subnet_id.value
-
-  tags = {
-    Terraform   = "true"
-    Environment = "dev"
-  }
-  depends_on = [module.my_key_pair]
-}
-
 module "public_sg" {
   source = "github.com/terraform-aws-modules/terraform-aws-security-group"
 
@@ -104,6 +63,12 @@ module "private_sg" {
       protocol                 = "-1"
       description              = "Allow all inbound traffic from within VPC"
       source_security_group_id = module.public_sg.security_group_id
+      }, {
+      from_port   = 22
+      to_port     = 22
+      protocol    = "tcp"
+      description = "Allow SSH inbound from anywhere"
+      cidr_blocks = "0.0.0.0/0"
     }
   ]
   egress_with_cidr_blocks = [
@@ -116,5 +81,3 @@ module "private_sg" {
     }
   ]
 }
-
-

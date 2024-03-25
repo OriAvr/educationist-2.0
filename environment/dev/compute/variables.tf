@@ -1,13 +1,7 @@
-variable "public_instance_name" {
+variable "instance_names" {
   description = "Name for the public EC2 instance."
-  type        = string
-  default     = "public_instance"
-}
-
-variable "private_instance_name" {
-  description = "Name for the private EC2 instance."
-  type        = string
-  default     = "private_instance"
+  type        = list(string)
+  default     = ["one"]
 }
 
 variable "instance_type" {
