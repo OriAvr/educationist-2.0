@@ -1,3 +1,4 @@
+/*
 locals {
   name        = var.use_name_prefix ? null : var.name
   name_prefix = var.use_name_prefix ? "${var.name}-" : null
@@ -20,3 +21,4 @@ resource "aws_db_subnet_group" "this" {
     },
   )
 }
+*/

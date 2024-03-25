@@ -1,3 +1,4 @@
+/*
 output "enhanced_monitoring_iam_role_name" {
   description = "The name of the monitoring role"
   value       = try(aws_iam_role.enhanced_monitoring[0].name, null)
@@ -136,3 +137,4 @@ output "db_instance_secretsmanager_secret_rotation_enabled" {
   description = "Specifies whether automatic rotation is enabled for the secret"
   value       = try(aws_secretsmanager_secret_rotation.this[0].rotation_enabled, null)
 }
+*/

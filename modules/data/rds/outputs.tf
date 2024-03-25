@@ -1,3 +1,4 @@
+/*
 output "db_instance_identifier" {
   value = module.db_instance.db_instance_identifier
 }
@@ -25,4 +26,4 @@ output "db_master_username" {
 output "storage_encrypted" {
   value = var.storage_encrypted
 }
-
+*/

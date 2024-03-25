@@ -1,3 +1,4 @@
+/*
 variable "create" {
   description = "Whether to create this resource or not?"
   type        = bool
@@ -33,3 +34,4 @@ variable "tags" {
   type        = map(string)
   default     = {}
 }
+*/

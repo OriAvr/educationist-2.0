@@ -1,3 +1,4 @@
+/*
 locals {
   monitoring_role_arn = var.create_monitoring_role ? aws_iam_role.enhanced_monitoring[0].arn : var.monitoring_role_arn
 
@@ -218,3 +219,4 @@ resource "aws_secretsmanager_secret_rotation" "this" {
     schedule_expression      = var.master_user_password_rotation_schedule_expression
   }
 }
+*/

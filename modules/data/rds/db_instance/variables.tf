@@ -1,4 +1,4 @@
-
+/*
 variable "create" {
   description = "Whether to create this resource or not?"
   type        = bool
@@ -482,3 +482,4 @@ variable "master_user_password_rotation_schedule_expression" {
   type        = string
   default     = null
 }
+*/
