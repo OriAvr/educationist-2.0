@@ -3,9 +3,10 @@ module "my_vpc" {
   name   = var.name
   cidr   = var.cidr
 
-  azs             = var.azs
-  private_subnets = var.private_subnets
-  public_subnets  = var.public_subnets
+  azs              = var.azs
+  private_subnets  = var.private_subnets
+  public_subnets   = var.public_subnets
+  database_subnets = var.database_subnets
 
   enable_nat_gateway     = var.enable_nat_gateway
   single_nat_gateway     = var.single_nat_gateway
@@ -19,9 +20,18 @@ module "my_vpc" {
   tags = var.tags
 }
 
+# S3 VPC Endpoint
+resource "aws_vpc_endpoint" "s3" {
+  vpc_id            = module.my_vpc.vpc_id
+  service_name      = "com.amazonaws.${var.s3_region}.s3"
+  vpc_endpoint_type = "Gateway"
+  route_table_ids   = module.my_vpc.private_route_table_ids
+
+}
 
 
-/*# VPC
+/*
+# VPC
 resource "aws_vpc" "this" {
   cidr_block           = var.cidr
   instance_tenancy     = var.instance_tenancy

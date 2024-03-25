@@ -11,7 +11,7 @@ variable "cidr" {
 }
 
 variable "azs" {
-  description = "Region of the s3 to be used by the Gateway Endpoint."
+  description = "A list of availability zones names or ids in the region"
   type        = list(string)
   default     = ["eu-west-3a", "eu-west-3b", "eu-west-3c"]
 }
@@ -19,13 +19,19 @@ variable "azs" {
 variable "private_subnets" {
   description = "CIDR blocks for the private subnets."
   type        = list(string)
-  default     = ["10.0.1.0/24", "10.0.2.0/24", "10.0.3.0/24"]
+  default     = ["10.0.1.0/24"]
 }
 
 variable "public_subnets" {
   description = "CIDR blocks for the public subnets."
   type        = list(string)
-  default     = ["10.0.101.0/24", "10.0.102.0/24", "10.0.103.0/24"]
+  default     = ["10.0.101.0/24"]
+}
+
+variable "database_subnets" {
+  description = "CIDR blocks for the database subnets."
+  type        = list(string)
+  default     = ["10.0.2.0/24", "10.0.3.0/24"]
 }
 
 variable "enable_nat_gateway" {
@@ -50,6 +56,12 @@ variable "flow_logs_bucket_arn" {
   description = "S3 flow logs bucket ARN"
   type        = string
   default     = ""
+}
+
+variable "s3_region" {
+  description = "Region of the s3 to be used by the Gateway Endpoint."
+  type        = string
+  default     = "eu-west-3"
 }
 
 variable "tags" {
