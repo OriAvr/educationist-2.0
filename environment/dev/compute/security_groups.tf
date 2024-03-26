@@ -54,7 +54,7 @@ module "private_sg" {
     {
       from_port   = 0
       to_port     = 0
-      protocol    = "-1" // -1 means all protocols
+      protocol    = "-1"
       description = "Allow all inbound traffic from within VPC"
       cidr_blocks = data.aws_ssm_parameter.vpc_cidr_block.value
       }, {

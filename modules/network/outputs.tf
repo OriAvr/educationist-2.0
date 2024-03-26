@@ -33,10 +33,7 @@ output "private_subnets" {
   value       = module.my_vpc.private_subnets
 }
 
-
-/*
 output "s3_vpc_endpoint_id" {
   description = "The ID of the S3 VPC Endpoint"
   value       = aws_vpc_endpoint.s3.id
 }
-*/
