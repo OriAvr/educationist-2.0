@@ -29,13 +29,12 @@ module "private_instance" {
 
   for_each = toset(var.instance_names)
 
-  name                        = "private-instance-${each.key}"
-  instance_type               = var.instance_type
-  key_name                    = var.key_pair_name
-  monitoring                  = true
-  vpc_security_group_ids      = [module.private_sg.security_group_id]
-  subnet_id                   = data.aws_ssm_parameter.private_subnets_id.value
-  associate_public_ip_address = true
+  name                   = "private-instance-${each.key}"
+  instance_type          = var.instance_type
+  key_name               = var.key_pair_name
+  monitoring             = true
+  vpc_security_group_ids = [module.private_sg.security_group_id]
+  subnet_id              = data.aws_ssm_parameter.private_subnets_id.value
 
   tags = {
     Terraform   = "true"
