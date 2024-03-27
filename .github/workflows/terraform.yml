@@ -3,10 +3,10 @@ name: "Terraform CI"
 on:
   push:
     branches:
-      - main
+      - new-feature
   pull_request:
     branches:
-      - main
+      - new-feature
 
 jobs:
   terraform:
@@ -26,11 +26,11 @@ jobs:
       - name: "Setup Terraform"
         uses: hashicorp/setup-terraform@v1
         with:
-          terraform_version: 1.0.0 # Adjust the version as necessary
+          terraform_version: 1.7.4 # Adjust the version as necessary
 
       - name: "Update Terraform Cloud Variables"
         env:
-          TF_VAR_file: "dev.tfvars" # Adjust based on the branch if necessary
+          TF_VAR_file: "environments/dev/network/dev.tfvars environments/dev/compute/dev.tfvars environments/dev/data/dev.tfvars" # Adjust based on the branch if necessary
         run: |
           # Assuming dev.tfvars is located at the root directory
           VARS=$(cat $TF_VAR_file | awk -F= '{print $1}')
