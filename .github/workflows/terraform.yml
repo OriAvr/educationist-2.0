@@ -1,0 +1,66 @@
+name: "Terraform CI"
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  terraform:
+    name: "Terraform"
+    runs-on: ubuntu-latest
+    env:
+      AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+      AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+      AWS_DEFAULT_REGION: "eu-south-1"
+      TF_CLOUD_TOKEN: ${{ secrets.TF_CLOUD_TOKEN }}
+      TF_ORG_NAME: ${{ secrets.TF_ORG_NAME }}
+      TF_WORKSPACE_NAME: ${{ secrets.TF_WORKSPACE_NAME }}
+    steps:
+      - name: "Checkout"
+        uses: actions/checkout@v2
+
+      - name: "Setup Terraform"
+        uses: hashicorp/setup-terraform@v1
+        with:
+          terraform_version: 1.0.0 # Adjust the version as necessary
+
+      - name: "Update Terraform Cloud Variables"
+        env:
+          TF_VAR_file: "dev.tfvars" # Adjust based on the branch if necessary
+        run: |
+          # Assuming dev.tfvars is located at the root directory
+          VARS=$(cat $TF_VAR_file | awk -F= '{print $1}')
+          for VAR in $VARS; do
+            VALUE=$(awk -F= "/^${VAR}=/ {print \$2}" $TF_VAR_file | tr -d '"')
+            PAYLOAD=$(jq -n \
+                      --arg key "$VAR" \
+                      --arg value "$VALUE" \
+                      '{data: {type: "vars", attributes: {key: $key, value: $value, category: "terraform", sensitive: false}}}')
+            curl \
+              --header "Authorization: Bearer $TF_CLOUD_TOKEN" \
+              --header "Content-Type: application/vnd.api+json" \
+              --request POST \
+              --data "$PAYLOAD" \
+              "https://app.terraform.io/api/v2/workspaces/$TF_WORKSPACE_ID/vars"
+          done
+
+      - name: "Terraform Init and Plan for Network"
+        run: |
+          terraform -chdir=environments/dev/network init
+          terraform -chdir=environments/dev/network plan
+
+      - name: "Terraform Init and Plan for Storage"
+        run: |
+          terraform -chdir=environments/dev/storage init
+          terraform -chdir=environments/dev/storage plan
+
+      - name: "Terraform Init and Plan for Compute"
+        run: |
+          terraform -chdir=environments/dev/compute init
+          terraform -chdir=environments/dev/compute plan
+
+      # Add additional steps as necessary for your workflow
