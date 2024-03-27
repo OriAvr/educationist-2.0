@@ -50,17 +50,17 @@ jobs:
 
       - name: "Terraform Init and Plan for Network"
         run: |
-          terraform -chdir=environments/dev/network init
-          terraform -chdir=environments/dev/network plan
+          terraform -chdir=environment/dev/network init
+          terraform -chdir=environment/dev/network plan
 
-      - name: "Terraform Init and Plan for Storage"
+      - name: "Terraform Init and Plan for Data"
         run: |
-          terraform -chdir=environments/dev/storage init
-          terraform -chdir=environments/dev/storage plan
+          terraform -chdir=environment/dev/data init
+          terraform -chdir=environment/dev/data plan
 
       - name: "Terraform Init and Plan for Compute"
         run: |
-          terraform -chdir=environments/dev/compute init
-          terraform -chdir=environments/dev/compute plan
+          terraform -chdir=environment/dev/compute init
+          terraform -chdir=environment/dev/compute plan
 
       # Add additional steps as necessary for your workflow
