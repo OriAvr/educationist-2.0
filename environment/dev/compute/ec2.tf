@@ -17,10 +17,7 @@ module "public_instance" {
   subnet_id                   = data.aws_ssm_parameter.public_subnets_id.value
   associate_public_ip_address = true
 
-  tags = {
-    Terraform   = "true"
-    Environment = "dev"
-  }
+  tags       = var.tags
   depends_on = [module.my_key_pair]
 }
 
@@ -36,10 +33,7 @@ module "private_instance" {
   vpc_security_group_ids = [module.private_sg.security_group_id]
   subnet_id              = data.aws_ssm_parameter.private_subnets_id.value
 
-  tags = {
-    Terraform   = "true"
-    Environment = "dev"
-  }
+  tags       = var.tags
   depends_on = [module.my_key_pair]
 }
 
