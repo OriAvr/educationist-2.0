@@ -37,6 +37,11 @@ jobs:
             while IFS='=' read -r KEY VALUE; do
               [ -z "$KEY" ] && continue # Skip empty lines
               VALUE=$(echo $VALUE | xargs) # Trim whitespace
+              PAYLOAD=$(jq -n \
+                  --arg key "$KEY" \
+                  --arg value "$VALUE" \
+                  --arg category "terraform" \
+                  '{data: {type: "vars", attributes: {key: $key, value: $value, category: $category, hcl: false, sensitive: false}}}')
               curl \
                       --header "Authorization: Bearer $TFE_TOKEN" \
                       --header "Content-Type: application/vnd.api+json" \
