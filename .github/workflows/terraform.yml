@@ -27,7 +27,7 @@ jobs:
         run: pwd
 
       - name: List Directory Contents
-        run: ls -la
+        run: ls -la /environment/dev
 
       - name: "Setup Terraform"
         uses: hashicorp/setup-terraform@v1
