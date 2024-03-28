@@ -23,11 +23,11 @@ jobs:
       - name: "Checkout"
         uses: actions/checkout@v2
 
-      - name: Print Working Directory
-        run: pwd
-
-      - name: List Directory Contents
-        run: ls -la /environment/dev
+      - name: Install tree and Display Directory Structure
+        run: |
+          sudo apt-get update
+          sudo apt-get install tree -y
+          tree
 
       - name: "Setup Terraform"
         uses: hashicorp/setup-terraform@v1
