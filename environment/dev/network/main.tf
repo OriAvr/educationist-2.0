@@ -17,7 +17,7 @@ module "my_vpc" {
 
   tags = var.tags
 }
-
+/*
 module "my_s3_bucket" {
   source      = "../../../modules/data/s3"
   bucket_name = "educationist-flow-logs"
@@ -51,5 +51,4 @@ module "my_s3_bucket" {
     ]
   })
 }
-
-
+*/
