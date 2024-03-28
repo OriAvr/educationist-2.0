@@ -23,6 +23,12 @@ jobs:
       - name: "Checkout"
         uses: actions/checkout@v2
 
+      - name: Print Working Directory
+        run: pwd
+
+      - name: List Directory Contents
+        run: ls -la
+
       - name: "Setup Terraform"
         uses: hashicorp/setup-terraform@v1
         with:
