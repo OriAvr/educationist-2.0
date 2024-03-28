@@ -16,8 +16,8 @@
 # Ignore all .tfvars files that might contain sensitive data, such as passwords,
 # keys, and other secrets. You'll manually add exceptions as needed.
 
-#*.tfvars
-#*.tfvars.json
+*.tfvars
+*.tfvars.json
 
 # Logs
 crash.log
