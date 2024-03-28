@@ -27,6 +27,12 @@ jobs:
         uses: hashicorp/setup-terraform@v1
         with:
           terraform_version: 1.7.4 # Adjust the version as necessary
+        
+        - name: "Login to Terraform Cloud"
+          run: |
+          terraform login
+          yes
+          $TFE_TOKEN
 
       - name: "Update Terraform Cloud Variables"
         env:
