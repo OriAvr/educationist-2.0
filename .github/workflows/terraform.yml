@@ -38,7 +38,7 @@ jobs:
               [ -z "$KEY" ] && continue # Skip empty lines
               VALUE=$(echo $VALUE | xargs) # Trim whitespace
               curl \
-                      --header "Authorization: Bearer $TF_CLOUD_TOKEN" \
+                      --header "Authorization: Bearer $TF_API_TOKEN" \
                       --header "Content-Type: application/vnd.api+json" \
                       --request POST \
                       --data "$PAYLOAD" \
