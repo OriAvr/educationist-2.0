@@ -32,7 +32,7 @@ jobs:
         env:
           TF_VAR_file: "environment/dev/network/dev.tfvars environment/dev/compute/dev.tfvars environment/dev/data/dev.tfvars" # Adjust based on the branch if necessary
         run: |
-          TF_VAR_FILES=("environments/dev/network/dev.tfvars" "environments/dev/compute/dev.tfvars" "environments/dev/data/dev.tfvars")
+          TF_VAR_FILES=("environment/dev/network/dev.tfvars" "environment/dev/compute/dev.tfvars" "environment/dev/data/dev.tfvars")
           for TF_VAR_FILE in "${TF_VAR_FILES[@]}"; do
             while IFS='=' read -r KEY VALUE; do
               [ -z "$KEY" ] && continue # Skip empty lines
