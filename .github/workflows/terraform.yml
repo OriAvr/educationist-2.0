@@ -28,6 +28,12 @@ jobs:
         with:
           terraform_version: 1.7.4 # Adjust the version as necessary
 
+      - name: "Terraform Cloud Login"
+        run: |
+          terraform login
+          yes
+          $TF_API_TOKEN
+
       - name: "Update Terraform Cloud Variables"
         env:
           TF_VAR_file: "environment/dev/network/dev.tfvars environment/dev/compute/dev.tfvars environment/dev/data/dev.tfvars" # Adjust based on the branch if necessary
