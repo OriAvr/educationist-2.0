@@ -32,6 +32,7 @@ jobs:
 
       - name: "Terraform Init and Plan"
         run: |
+          ls -a
           cd code/network
           terraform init
           terraform plan
@@ -43,7 +44,8 @@ jobs:
           cd code/compute
           terraform init
           terraform plan
-
+        env:
+          TF_CLI_CONFIG_FILE: ${{ github.workspace }}/.terraformrc
 # name: "Terraform CI"
 #
 # on:
