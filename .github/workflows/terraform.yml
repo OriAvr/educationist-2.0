@@ -1,4 +1,4 @@
-name: "Terraform CI"
+name: "Terraform Cloud CI"
 on:
   push:
     branches:
