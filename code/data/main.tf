@@ -1,5 +1,5 @@
 module "my_rds_instance" {
-  source = "../../../modules/data/rds"
+  source = "../../modules/data/rds"
 
   identifier            = var.identifier
   db_engine             = var.db_engine
