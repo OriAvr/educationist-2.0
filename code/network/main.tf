@@ -17,6 +17,7 @@ module "my_vpc" {
 
   tags = var.tags
 }
+
 /*
 module "my_s3_bucket" {
   source      = "../../../modules/data/s3"
