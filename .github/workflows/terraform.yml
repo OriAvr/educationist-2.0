@@ -34,15 +34,15 @@ jobs:
         run: |
           cd code/network
           terraform init
-          terraform plan -var-file=dev.tfvars
+          terraform plan 
           cd ../../
           cd code/data
           terraform init
-          terraform plan -var-file=dev.tfvars
+          terraform plan 
           cd ../../
           cd code/compute
           terraform init
-          terraform plan -var-file=dev.tfvars
+          terraform plan
         env:
           TF_CLI_CONFIG_FILE: ${{ github.workspace }}/.terraformrc
 # name: "Terraform CI"

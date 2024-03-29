@@ -4,7 +4,7 @@
     key    = "network/terraform.tfstate"
     region = "eu-west-3"
   }
-}
+}*/
 
 terraform {
   cloud {
@@ -13,14 +13,5 @@ terraform {
       name = "educationist"
     }
   }
-}*/
-
-terraform {
-  backend "remote" {
-    hostname     = "app.terraform.io"
-    organization = "Ori-Avraham"
-    workspaces {
-      name = "educationist"
-    }
-  }
 }
+
