@@ -1,5 +1,4 @@
 name: "Terraform CI"
-
 on:
   push:
     branches:
@@ -15,10 +14,7 @@ jobs:
     env:
       AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
       AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-      AWS_DEFAULT_REGION: "eu-west-3"
-      TFE_TOKEN: ${{ secrets.TF_CLOUD_TOKEN }}
-      TF_ORG_NAME: ${{ secrets.TF_ORG_NAME }}
-      TF_WORKSPACE_NAME: ${{ secrets.TF_WORKSPACE_NAME }}
+      AWS_DEFAULT_REGION: eu-west-3
     steps:
       - name: "Checkout"
         uses: actions/checkout@v2
@@ -26,50 +22,88 @@ jobs:
       - name: "Setup Terraform"
         uses: hashicorp/setup-terraform@v1
         with:
-          terraform_version: 1.7.4 # Adjust the version as necessary
+          terraform_version: 1.7.4
 
-      - name: "Login to Terraform Cloud"
+      - name: "Terraform Init and Plan"
         run: |
-          terraform login
-          yes
-          $TFE_TOKEN
+          cd code/network
+          terraform init
+          terraform plan
+          cd ../../../
+          cd code/data
+          terraform init
+          terraform plan
+          cd ../../../
+          cd code/compute
+          terraform init
+          terraform plan
 
-      - name: "Update Terraform Cloud Variables"
-        env:
-          TF_VAR_file: "environment/dev/network/dev.tfvars environment/dev/compute/dev.tfvars environment/dev/data/dev.tfvars" # Adjust based on the branch if necessary
-        run: |
-          TF_VAR_FILES=("environment/dev/network/dev.tfvars" "environment/dev/compute/dev.tfvars" "environment/dev/data/dev.tfvars")
-          for TF_VAR_FILE in "${TF_VAR_FILES[@]}"; do
-            while IFS='=' read -r KEY VALUE; do
-              [ -z "$KEY" ] && continue # Skip empty lines
-              VALUE=$(echo $VALUE | xargs) # Trim whitespace
-              PAYLOAD=$(jq -n \
-                  --arg key "$KEY" \
-                  --arg value "$VALUE" \
-                  --arg category "terraform" \
-                  '{data: {type: "vars", attributes: {key: $key, value: $value, category: $category, hcl: false, sensitive: false}}}')
-              curl \
-                      --header "Authorization: Bearer $TFE_TOKEN" \
-                      --header "Content-Type: application/vnd.api+json" \
-                      --request POST \
-                      --data "$PAYLOAD" \
-                      "https://app.terraform.io/api/v2/workspaces/$TF_WORKSPACE_NAME/vars"
-            done < "$TF_VAR_FILE"
-          done
-
-      - name: "Terraform Init and Plan for Network"
-        run: |
-          terraform -chdir=environment/dev/network init
-          terraform -chdir=environment/dev/network plan
-
-      - name: "Terraform Init and Plan for Data"
-        run: |
-          terraform -chdir=environment/dev/data init
-          terraform -chdir=environment/dev/data plan
-
-      - name: "Terraform Init and Plan for Compute"
-        run: |
-          terraform -chdir=environment/dev/compute init
-          terraform -chdir=environment/dev/compute plan
-
-      # Add additional steps as necessary for your workflow
+# name: "Terraform CI"
+#
+# on:
+#   push:
+#     branches:
+#       - new-feature
+#   pull_request:
+#     branches:
+#       - new-feature
+#
+# jobs:
+#   terraform:
+#     name: "Terraform"
+#     runs-on: ubuntu-latest
+#     env:
+#       AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+#       AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+#       AWS_DEFAULT_REGION: "eu-west-3"
+#       TFE_TOKEN: ${{ secrets.TF_CLOUD_TOKEN }}
+#       TF_ORG_NAME: ${{ secrets.TF_ORG_NAME }}
+#       TF_WORKSPACE_NAME: ${{ secrets.TF_WORKSPACE_NAME }}
+#     steps:
+#       - name: "Checkout"
+#         uses: actions/checkout@v2
+#
+#       - name: "Setup Terraform"
+#         uses: hashicorp/setup-terraform@v1
+#         with:
+#           terraform_version: 1.7.4 # Adjust the version as necessary
+#
+#       - name: "Update Terraform Cloud Variables"
+#         env:
+#           TF_VAR_file: "environment/dev/network/dev.tfvars environment/dev/compute/dev.tfvars environment/dev/data/dev.tfvars" # Adjust based on the branch if necessary
+#         run: |
+#           TF_VAR_FILES=("environment/dev/network/dev.tfvars" "environment/dev/compute/dev.tfvars" "environment/dev/data/dev.tfvars")
+#           for TF_VAR_FILE in "${TF_VAR_FILES[@]}"; do
+#             while IFS='=' read -r KEY VALUE; do
+#               [ -z "$KEY" ] && continue # Skip empty lines
+#               VALUE=$(echo $VALUE | xargs) # Trim whitespace
+#               PAYLOAD=$(jq -n \
+#                   --arg key "$KEY" \
+#                   --arg value "$VALUE" \
+#                   --arg category "terraform" \
+#                   '{data: {type: "vars", attributes: {key: $key, value: $value, category: $category, hcl: false, sensitive: false}}}')
+#               curl \
+#                       --header "Authorization: Bearer $TFE_TOKEN" \
+#                       --header "Content-Type: application/vnd.api+json" \
+#                       --request POST \
+#                       --data "$PAYLOAD" \
+#                       "https://app.terraform.io/api/v2/workspaces/$TF_WORKSPACE_NAME/vars"
+#             done < "$TF_VAR_FILE"
+#           done
+#
+#       - name: "Terraform Init and Plan for Network"
+#         run: |
+#           terraform -chdir=environment/dev/network init
+#           terraform -chdir=environment/dev/network plan
+#
+#       - name: "Terraform Init and Plan for Data"
+#         run: |
+#           terraform -chdir=environment/dev/data init
+#           terraform -chdir=environment/dev/data plan
+#
+#       - name: "Terraform Init and Plan for Compute"
+#         run: |
+#           terraform -chdir=environment/dev/compute init
+#           terraform -chdir=environment/dev/compute plan
+#
+#       # Add additional steps as necessary for your workflow
