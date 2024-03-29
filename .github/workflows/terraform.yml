@@ -11,6 +11,12 @@ jobs:
   terraform:
     name: "Terraform"
     runs-on: ubuntu-latest
+    env:
+      AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+      AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+      TF_CLOUD_TOKEN: ${{ secrets.TF_CLOUD_TOKEN }}
+      AWS_DEFAULT_REGION: "eu-west-3"
+      TF_CLI_CONFIG_FILE: ${{ github.workspace }}/.terraformrc
     steps:
       - name: "Checkout"
         uses: actions/checkout@v2
@@ -38,12 +44,7 @@ jobs:
           cd code/compute
           terraform init
           terraform plan
-        env:
-          TF_CLI_CONFIG_FILE: ${{ github.workspace }}/.terraformrc
-          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          TF_CLOUD_TOKEN: ${{ secrets.TF_CLOUD_TOKEN }}
-          AWS_DEFAULT_REGION: "eu-west-3"
+
 # name: "Terraform CI"
 #
 # on:
