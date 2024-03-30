@@ -10,12 +10,12 @@ on:
       TF_API_TOKEN:
         required: true
   push:
-    branches: ["main"]
+    branches: ["new-feature"]
   pull_request:
-    branches: ["main"]
+    branches: ["new-feature"]
 
 env:
-  tfcode_path: code/compute
+  tfcode_path: code/network
 
 jobs:
   aws_tfc_job:
