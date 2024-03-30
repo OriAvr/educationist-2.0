@@ -1,11 +1,9 @@
 name: "Terraform Cloud CI"
 on:
   push:
-    branches:
-      - new-feature
+    branches: ["new-feature/code/network"]
   pull_request:
-    branches:
-      - new-feature
+    branches: ["new-feature/code/network"]
 
 jobs:
   terraform:
