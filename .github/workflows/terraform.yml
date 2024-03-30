@@ -31,19 +31,19 @@ jobs:
           echo "  token = \"${TF_CLOUD_TOKEN}\"" >> .terraformrc
           echo "}" >> .terraformrc
 
-      - name: "Terraform Init and Plan"
-        run: |
-          cd code/network
-          terraform init
-          terraform plan
-          cd ../../
-          cd code/data
-          terraform init
-          terraform plan 
-          cd ../../
-          cd code/compute
-          terraform init
-          terraform plan
+#      - name: "Terraform Init and Plan"
+#        run: |
+#          cd code/network
+#          terraform init
+#          terraform plan
+#          cd ../../
+#          cd code/data
+#          terraform init
+#          terraform plan
+#          cd ../../
+#          cd code/compute
+#          terraform init
+#          terraform plan
 
 # name: "Terraform CI"
 #
