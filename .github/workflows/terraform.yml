@@ -35,8 +35,9 @@ jobs:
         run: |
           cd code/network
           terraform init
-          terraform plan 
+          terraform plan
           cd ../../
+          ls -a
           cd code/data
           terraform init
           terraform plan 
