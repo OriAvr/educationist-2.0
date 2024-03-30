@@ -12,7 +12,7 @@ terraform {
   cloud {
     organization = "Ori-Avraham"
     workspaces {
-      name = "educationist"
+      name = "educationist-data"
     }
   }
 }
