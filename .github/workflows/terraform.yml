@@ -1,9 +1,11 @@
 name: "Terraform Cloud CI"
 on:
   push:
-    branches: ["new-feature/code/network"]
+    branches:
+      - new-feature
   pull_request:
-    branches: ["new-feature/code/network"]
+    branches:
+      - new-feature
 
 jobs:
   terraform:
@@ -29,11 +31,45 @@ jobs:
           echo "  token = \"${TF_CLOUD_TOKEN}\"" >> .terraformrc
           echo "}" >> .terraformrc
 
-#      - name: "Terraform Init and Plan"
-#        run: |
-#          cd code/network
-#          terraform init
-#          terraform plan
+      - name: "Terraform Init"
+        id: init
+        run: |
+          cd code/network
+          terraform init
+
+      - name: "Terraform Plan"
+        id: plan
+        run: |
+          terraform plan
+
+      - name: Plan output
+        id: output
+        uses: actions/github-script@v3
+        if: github.event_name == 'pull_request'
+        env:
+          PLAN: "terraform\n${{ steps.plan.outputs.stdout }}"
+        with:
+          script: |
+            #### Terraform Initialization ⚙️\`${{ steps.init.outcome }}\`
+            #### Terraform Plan 📖\`${{ steps.plan.outcome }}\`
+            <details><summary>Show Plan</summary>
+
+            \`\`\`hcl
+            ${process.env.PLAN}
+            \`\`\`
+
+            </details>
+
+            **Pusher**: @${{ github.actor }}
+            **Action**: ${{ github.event_name }}
+            `;
+            github.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: output
+            })
+
 #          cd ../../
 #          cd code/data
 #          terraform init
