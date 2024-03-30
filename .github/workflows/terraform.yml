@@ -33,7 +33,6 @@ jobs:
 
       - name: "Terraform Init and Plan"
         run: |
-          ls -a 
           cd code/network
           terraform init
           terraform plan
