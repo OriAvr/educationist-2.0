@@ -5,6 +5,11 @@ on:
     secrets:
       TF_API_TOKEN:
         required: true
+    inputs:
+      environment:
+        description: "Deployment environment"
+        required: true
+        type: string
   push:
     branches: ["new-feature"]
   pull_request:
