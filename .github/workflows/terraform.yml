@@ -51,13 +51,13 @@ jobs:
       - name: Terraform apply
         run: |
           echo `pwd`
-          echo "** Running Terraform Plan**"
+          echo "** Running Terraform Apply**"
           terraform apply -auto-approve
         working-directory: ${{ env.tfcode_path }}
 
       - name: Terraform destroy
         run: |
           echo `pwd`
-          echo "** Running Terraform Plan**"
+          echo "** Running Terraform Destroy**"
           terraform destroy -auto-approve
         working-directory: ${{ env.tfcode_path }}
