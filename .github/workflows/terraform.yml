@@ -42,8 +42,20 @@ jobs:
         working-directory: ${{ env.tfcode_path }}
       - name: Terraform plan
         run: |
-          echo `pwd`   
+          echo `pwd`
           echo "** Running Terraform Plan**"
           terraform plan
+
+      - name: Terraform apply
+        run: |
+          echo `pwd`
+          echo "** Running Terraform Plan**"
+          terraform apply --auto-approve
+
+      - name: Terraform destroy
+        run: |
+          echo `pwd`
+          echo "** Running Terraform Plan**"
+          terraform destroy --auto-approve
 
         working-directory: ${{ env.tfcode_path }}
