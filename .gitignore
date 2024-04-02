@@ -32,3 +32,7 @@ override.tf.json
 # Exclude CLI configuration files
 .terraformrc
 terraform.rc
+
+
+# For development 
+user_data.sh.tpl
