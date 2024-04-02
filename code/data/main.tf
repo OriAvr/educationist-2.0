@@ -17,9 +17,49 @@ module "my_rds_instance" {
   multi_az             = var.multi_az
   db_subnet_group_name = data.aws_ssm_parameter.database_subnet_group.value
 
-  vpc_security_group_ids = [data.aws_ssm_parameter.vpc_default_security_group_id.value]
+  vpc_security_group_ids = [data.aws_ssm_parameter.vpc_default_security_group_id.value, module.db_sg.security_group_id]
 
   tags = var.tags
+}
+
+
+module "db_sg" {
+  source = "github.com/terraform-aws-modules/terraform-aws-security-group"
+
+  name        = var.db_sg_name
+  description = "Security group for user-service with custom ports open within VPC, and PostgreSQL publicly open"
+  vpc_id      = data.aws_ssm_parameter.vpc_id.value
+
+  // Allow inbound traffic from within VPC CIDR
+  ingress_with_cidr_blocks = [
+    {
+      from_port   = 5432
+      to_port     = 5432
+      protocol    = "tcp"
+      description = "Allow PostgreSQL access from within VPC"
+      cidr_blocks = data.aws_ssm_parameter.vpc_cidr_block.value
+    }
+  ]
+
+  ingress_with_source_security_group_id = [
+    {
+      from_port                = 3306
+      to_port                  = 3306
+      protocol                 = "tcp"
+      description              = "Allow all inbound traffic from the backend instances"
+      source_security_group_id = data.aws_ssm_parameter.private_sg_id.value
+    }
+  ]
+
+  egress_with_cidr_blocks = [
+    {
+      from_port   = 0
+      to_port     = 0
+      protocol    = "-1"
+      description = "Allow all outbound traffic"
+      cidr_blocks = "0.0.0.0/0"
+    }
+  ]
 }
 
 /*

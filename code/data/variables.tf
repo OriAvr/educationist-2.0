@@ -79,3 +79,8 @@ variable "tags" {
   }
 }
 
+variable "db_sg_name" {
+  description = "Name for the db security_group user"
+  type        = string
+  default     = "db_instance_sg"
+}

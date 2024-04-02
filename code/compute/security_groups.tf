@@ -55,22 +55,21 @@ module "private_sg" {
       from_port   = 0
       to_port     = 0
       protocol    = "-1"
-      description = "Allow all inbound traffic from within VPC"
+      description = "Allow all inbound traffic from within VPC."
       cidr_blocks = data.aws_ssm_parameter.vpc_cidr_block.value
-      }, {
+    }
+  ]
+
+  ingress_with_source_security_group_id = [
+    {
       from_port                = 0
       to_port                  = 0
       protocol                 = "-1"
-      description              = "Allow all inbound traffic from within VPC"
+      description              = "Allow all inbound traffic from the public instances."
       source_security_group_id = module.public_sg.security_group_id
-      }, {
-      from_port   = 22
-      to_port     = 22
-      protocol    = "tcp"
-      description = "Allow SSH inbound from anywhere"
-      cidr_blocks = "0.0.0.0/0"
     }
   ]
+
   egress_with_cidr_blocks = [
     {
       from_port   = 0
