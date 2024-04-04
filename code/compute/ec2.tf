@@ -16,16 +16,15 @@ module "private_instance" {
   vpc_security_group_ids = [module.private_sg.security_group_id]
   subnet_id              = data.aws_ssm_parameter.private_subnets_id.value
 
+  user_data = <<-EOF
+                #!/bin/bash
+                # Update system
+                yum update -y
+                yum install mysql
+                EOF
+
   tags       = var.tags
   depends_on = [module.my_key_pair]
-}
-
-data "aws_secretsmanager_secret" "db_pass_id" {
-  name = "rds!db-c5ca285b-da83-44a3-865f-b3c14512bfea"
-}
-
-data "aws_secretsmanager_secret_version" "db_pass" {
-  secret_id = data.aws_secretsmanager_secret.db_pass_id.id
 }
 
 module "public_instance" {
@@ -42,8 +41,11 @@ module "public_instance" {
   associate_public_ip_address = true
 
   user_data = templatefile("user_data.sh.tpl", {
-    private_instance_private_ip = "${module.private_instance[each.key].private_ip}"
-    db_password                 = data.aws_secretsmanager_secret_version.db_pass
+    private_instance_private_ip = module.private_instance[each.key].private_ip
+    private_key_pair            = module.my_key_pair.private_key_pem
+    private_instance_ip         = module.private_instance[each.key].private_ip
+    db_password                 = data.aws_secretsmanager_secret_version.db_password.secret_string
+    db_endpoint                 = data.aws_ssm_parameter.db_endpoint.value
   })
   tags       = var.tags
   depends_on = [module.my_key_pair, module.private_instance]

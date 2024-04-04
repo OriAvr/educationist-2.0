@@ -10,6 +10,18 @@ resource "aws_ssm_parameter" "vpc_cidr_block" {
   value = module.my_vpc.vpc_cidr
 }
 
+resource "aws_ssm_parameter" "public_subnets_cidr_block" {
+  name  = "/${var.tags.Environment}/my_vpc/public_subnets_cidr_block"
+  type  = "String"
+  value = var.public_subnets[0]
+}
+
+resource "aws_ssm_parameter" "private_subnets_cidr_block" {
+  name  = "/${var.tags.Environment}/my_vpc/private_subnets_cidr_block"
+  type  = "String"
+  value = var.private_subnets[0]
+}
+
 resource "aws_ssm_parameter" "database_subnet_group" {
   name  = "/${var.tags.Environment}/my_vpc/subnets/database_subnet_group"
   type  = "String"
@@ -33,3 +45,4 @@ resource "aws_ssm_parameter" "private_subnets_id" {
   type  = "String"
   value = module.my_vpc.private_subnets[0]
 }
+

@@ -10,9 +10,11 @@ module "my_rds" {
   allocated_storage     = var.allocated_storage
   max_allocated_storage = var.max_allocated_storage
 
-  db_name  = var.db_name
-  username = var.db_username
-  port     = var.db_port
+  db_name                     = var.db_name
+  username                    = var.db_username
+  manage_master_user_password = false
+  password                    = var.db_password
+  port                        = var.db_port
 
   multi_az             = var.multi_az
   db_subnet_group_name = var.db_subnet_group_name

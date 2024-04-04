@@ -14,8 +14,14 @@ data "aws_ssm_parameter" "vpc_cidr_block" {
   name = "/${var.tags.Environment}/my_vpc/vpc_cidr_block"
 }
 
-resource "aws_ssm_parameter" "private_sg_id" {
-  name  = "/${var.tags.Environment}/my_instances/private_sg_id"
-  type  = "String"
-  value = module.private_sg.security_group_id
+data "aws_secretsmanager_secret" "db_pass" {
+  name = "db_password"
+}
+
+data "aws_secretsmanager_secret_version" "db_password" {
+  secret_id = data.aws_secretsmanager_secret.db_pass.id
+}
+
+data "aws_ssm_parameter" "db_endpoint" {
+  name = "/${var.tags.Environment}/my_db/db_endpoint"
 }

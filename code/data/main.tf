@@ -1,3 +1,19 @@
+resource "aws_secretsmanager_secret" "db_pass" {
+  name = "db_password"
+}
+
+data "aws_secretsmanager_random_password" "db_pass" {
+  password_length     = 15
+  exclude_punctuation = true
+  # Ensure this resource is created before its value is used
+  depends_on = [aws_secretsmanager_secret.db_pass]
+}
+
+resource "aws_secretsmanager_secret_version" "db_password" {
+  secret_id     = aws_secretsmanager_secret.db_pass.id
+  secret_string = data.aws_secretsmanager_random_password.db_pass.random_password
+}
+
 module "my_rds_instance" {
   source = "../../modules/data/rds"
 
@@ -12,6 +28,8 @@ module "my_rds_instance" {
 
   db_name     = var.db_name
   db_username = var.db_username
+
+  db_password = aws_secretsmanager_secret_version.db_password.secret_string
   db_port     = var.db_port
 
   multi_az             = var.multi_az
@@ -19,7 +37,8 @@ module "my_rds_instance" {
 
   vpc_security_group_ids = [data.aws_ssm_parameter.vpc_default_security_group_id.value, module.db_sg.security_group_id]
 
-  tags = var.tags
+  depends_on = [data.aws_secretsmanager_random_password.db_pass]
+  tags       = var.tags
 }
 
 
@@ -33,21 +52,11 @@ module "db_sg" {
   // Allow inbound traffic from within VPC CIDR
   ingress_with_cidr_blocks = [
     {
-      from_port   = 5432
-      to_port     = 5432
+      from_port   = 3306
+      to_port     = 3306
       protocol    = "tcp"
-      description = "Allow PostgreSQL access from within VPC"
-      cidr_blocks = data.aws_ssm_parameter.vpc_cidr_block.value
-    }
-  ]
-
-  ingress_with_source_security_group_id = [
-    {
-      from_port                = 3306
-      to_port                  = 3306
-      protocol                 = "tcp"
-      description              = "Allow all inbound traffic from the backend instances"
-      source_security_group_id = data.aws_ssm_parameter.private_sg_id.value
+      description = "Allow MySQL access from the private instances."
+      cidr_blocks = data.aws_ssm_parameter.private_subnets_cidr_block.value
     }
   ]
 

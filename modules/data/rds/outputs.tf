@@ -3,10 +3,6 @@ output "db_instance_identifier" {
   value = module.db_instance.db_instance_identifier
 }
 
-output "db_instance_endpoint" {
-  value = module.db_instance.db_instance_endpoint
-}
-
 output "db_instance_port" {
   value = module.db_instance.db_instance_port
 }
@@ -27,3 +23,7 @@ output "storage_encrypted" {
   value = var.storage_encrypted
 }
 */
+
+output "db_instance_endpoint" {
+  value = module.my_rds.db_instance_endpoint
+}
