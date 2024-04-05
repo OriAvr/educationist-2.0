@@ -20,7 +20,7 @@ module "private_instance" {
                 #!/bin/bash
                 # Update system
                 yum update -y
-                yum install mysql
+                yum install mysql -y
                 EOF
 
   tags       = var.tags
