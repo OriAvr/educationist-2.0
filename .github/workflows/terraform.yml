@@ -10,9 +10,9 @@
 #        required: true
 #        type: string
 #  push:
-#    branches: ["new-feature"]
+#    branches: ["dev"]
 #  pull_request:
-#    branches: ["new-feature"]
+#    branches: ["dev"]
 #
 #env:
 #  tfcode_path: code/network
