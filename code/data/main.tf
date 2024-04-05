@@ -5,8 +5,7 @@ resource "aws_secretsmanager_secret" "db_pass" {
 data "aws_secretsmanager_random_password" "db_pass" {
   password_length     = 15
   exclude_punctuation = true
-  # Ensure this resource is created before its value is used
-  depends_on = [aws_secretsmanager_secret.db_pass]
+  depends_on          = [aws_secretsmanager_secret.db_pass]
 }
 
 resource "aws_secretsmanager_secret_version" "db_password" {
