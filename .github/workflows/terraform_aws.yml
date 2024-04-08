@@ -3,6 +3,7 @@ on:
   push:
     branches:
       - ci-features
+      - dev
   pull_request:
 permissions:
   id-token: write
