@@ -19,7 +19,7 @@ module "my_vpc" {
 }
 
 module "my_s3_bucket" {
-  source      = "../../../modules/data/s3"
+  source      = "../../modules/data/s3"
   bucket_name = "educationist-flow-logs"
   policy = jsonencode({
     "Version" : "2012-10-17",
