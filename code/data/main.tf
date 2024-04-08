@@ -70,9 +70,8 @@ module "db_sg" {
   ]
 }
 
-/*
 module "my_s3_bucket" {
-  source      = "../../../modules/data/s3"
+  source      = "../../modules/data/s3"
   bucket_name = "educationist-files"
   policy = jsonencode({
     "Version" : "2012-10-17",
@@ -104,4 +103,4 @@ module "my_s3_bucket" {
     ]
   })
 }
-*/
+
