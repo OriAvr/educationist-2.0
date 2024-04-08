@@ -70,7 +70,6 @@ module "db_sg" {
   ]
 }
 
-/*
 module "my_s3_bucket" {
   source      = "../../../modules/data/s3"
   bucket_name = "educationist-files"
@@ -104,4 +103,4 @@ module "my_s3_bucket" {
     ]
   })
 }
-*/
+
