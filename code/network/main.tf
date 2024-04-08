@@ -11,7 +11,7 @@ module "my_vpc" {
   enable_nat_gateway     = var.enable_nat_gateway
   single_nat_gateway     = var.single_nat_gateway
   one_nat_gateway_per_az = var.one_nat_gateway_per_az
-  flow_logs_bucket_arn   = ""
+  flow_logs_bucket_arn   = module.my_s3_bucket.bucket_arn
 
   s3_region = var.s3_region
 
