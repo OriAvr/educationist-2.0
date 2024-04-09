@@ -32,3 +32,6 @@ override.tf.json
 # Exclude CLI configuration files
 .terraformrc
 terraform.rc
+
+#variables for GitHub Action
+.secrets

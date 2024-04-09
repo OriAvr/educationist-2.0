@@ -1,17 +1,21 @@
 name: "Terraform action"
+
 on:
   push:
     branches:
       - ci-features
       - dev
   pull_request:
+
 permissions:
   id-token: write
   contents: read
   pull-requests: write
+
 env:
   TF_LOG: INFO
   AWS_REGION: ${{ secrets.AWS_REGION }}
+
 jobs:
   deploy:
     runs-on: ubuntu-latest
