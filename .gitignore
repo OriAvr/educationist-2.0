@@ -35,3 +35,5 @@ terraform.rc
 
 #variables for GitHub Action
 .secrets
+deploy_infrastructure.sh
+destroy_infrastructure.sh

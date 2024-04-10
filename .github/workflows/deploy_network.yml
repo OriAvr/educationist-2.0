@@ -1,4 +1,4 @@
-name: "Terraform action"
+name: "Deploy network resources"
 
 on:
   push:
@@ -103,5 +103,5 @@ jobs:
         run: exit 1
 
       - name: Terraform Apply
-        if: github.ref == 'refs/heads/dev' && github.event_name == 'push'
+        #if: github.ref == 'refs/heads/dev' && github.event_name == 'push'
         run: terraform apply -auto-approve -input=false
