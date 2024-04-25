@@ -10,16 +10,16 @@ variable "instance_type" {
   default     = "t3.micro"
 }
 
-variable "public_sg_name" {
+variable "frontend_sg_name" {
   description = "Name for the public EC2 instance secrity group."
   type        = string
-  default     = "public-instance-sg"
+  default     = "frontend-instance-sg"
 }
 
-variable "private_sg_name" {
+variable "backend_sg_name" {
   description = "Name for the private EC2 instance secrity group."
   type        = string
-  default     = "private-instance-sg"
+  default     = "backend-instance-sg"
 }
 
 variable "key_pair_name" {

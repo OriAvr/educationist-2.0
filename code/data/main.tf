@@ -40,12 +40,11 @@ module "my_rds_instance" {
   tags       = var.tags
 }
 
-
 module "db_sg" {
   source = "github.com/terraform-aws-modules/terraform-aws-security-group"
 
   name        = var.db_sg_name
-  description = "Security group for user-service with custom ports open within VPC, and PostgreSQL publicly open"
+  description = "Security group for the database."
   vpc_id      = data.aws_ssm_parameter.vpc_id.value
 
   // Allow inbound traffic from within VPC CIDR
@@ -54,8 +53,8 @@ module "db_sg" {
       from_port   = 3306
       to_port     = 3306
       protocol    = "tcp"
-      description = "Allow MySQL access from the private instances."
-      cidr_blocks = data.aws_ssm_parameter.private_subnets_cidr_block.value
+      description = "Allow MySQL access from the application instances."
+      cidr_blocks = data.aws_ssm_parameter.public_subnets_cidr_block.value
     }
   ]
 
@@ -77,28 +76,11 @@ module "my_s3_bucket" {
     "Version" : "2012-10-17",
     "Statement" : [
       {
-        "Sid" : "AllowAccessFromVPCOnly",
+        "Sid" : "AllowAccessToObjects",
         "Effect" : "Allow",
         "Principal" : "*",
         "Action" : "s3:GetObject",
-        "Resource" : "arn:aws:s3:::educationist-files/*",
-        "Condition" : {
-          "StringEquals" : {
-            "aws:SourceVpce" : "${data.aws_ssm_parameter.vpc_id}"
-          }
-        }
-      },
-      {
-        "Sid" : "DenyAccessFromOutsideVPC",
-        "Effect" : "Deny",
-        "Principal" : "*",
-        "Action" : "s3:GetObject",
-        "Resource" : "arn:aws:s3:::educationist-files/*",
-        "Condition" : {
-          "StringNotEquals" : {
-            "aws:SourceVpce" : "${data.aws_ssm_parameter.vpc_id}"
-          }
-        }
+        "Resource" : "arn:aws:s3:::educationist-files/*"
       }
     ]
   })
