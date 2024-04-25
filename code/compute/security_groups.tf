@@ -1,11 +1,11 @@
-module "public_sg" {
+module "frontend_sg" {
   source = "github.com/terraform-aws-modules/terraform-aws-security-group"
 
-  name        = var.public_sg_name
+  name        = var.frontend_sg_name
   description = "Security group for user-service with custom ports open within VPC, and PostgreSQL publicly open"
   vpc_id      = data.aws_ssm_parameter.vpc_id.value
 
-  // Allow inbound SSH, HTTP, HTTPS from anywhere
+  // Allow inbound HTTP, HTTPS from anywhere
   ingress_with_cidr_blocks = [
     {
       from_port   = 80
@@ -20,12 +20,11 @@ module "public_sg" {
       protocol    = "tcp"
       description = "Allow HTTPS inbound from anywhere"
       cidr_blocks = "0.0.0.0/0"
-    },
-    {
-      from_port   = 22
-      to_port     = 22
-      protocol    = "tcp"
-      description = "Allow SSH inbound from anywhere"
+      }, {
+      from_port   = 3000
+      to_port     = 3000
+      protocol    = "-1"
+      description = "Allow inbound on port 3000"
       cidr_blocks = "0.0.0.0/0"
     }
   ]
@@ -42,31 +41,35 @@ module "public_sg" {
   ]
 }
 
-module "private_sg" {
+module "backend_sg" {
   source = "github.com/terraform-aws-modules/terraform-aws-security-group"
 
-  name        = var.private_sg_name
-  description = "Security group for user-service with custom ports open within VPC, and PostgreSQL publicly open"
+  name        = var.backend_sg_name
+  description = "Security group for the backend server"
   vpc_id      = data.aws_ssm_parameter.vpc_id.value
 
   // Allow inbound traffic from within VPC CIDR
   ingress_with_cidr_blocks = [
     {
-      from_port   = 0
-      to_port     = 0
+      from_port   = 22
+      to_port     = 22
       protocol    = "-1"
-      description = "Allow all inbound traffic from within VPC."
+      description = "Allow inbound ssh from within VPC."
       cidr_blocks = data.aws_ssm_parameter.vpc_cidr_block.value
-    }
-  ]
-
-  ingress_with_source_security_group_id = [
+    },
     {
-      from_port                = 0
-      to_port                  = 0
-      protocol                 = "-1"
-      description              = "Allow all inbound traffic from the public instances."
-      source_security_group_id = module.public_sg.security_group_id
+      from_port   = 3306
+      to_port     = 3306
+      protocol    = "-1"
+      description = "Allow inbound mysql from within VPC."
+      cidr_blocks = data.aws_ssm_parameter.vpc_cidr_block.value
+    },
+    {
+      from_port   = 3000
+      to_port     = 3000
+      protocol    = "-1"
+      description = "Allow inbound on port 3000"
+      cidr_blocks = "0.0.0.0/0"
     }
   ]
 

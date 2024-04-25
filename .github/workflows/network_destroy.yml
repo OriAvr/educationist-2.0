@@ -1,4 +1,4 @@
-name: "Terraform Destroy"
+name: "Destroy network resources"
 
 on:
   workflow_dispatch:
@@ -23,6 +23,8 @@ jobs:
         with:
           role-to-assume: ${{ secrets.AWS_ROLE }}
           aws-region: ${{ secrets.AWS_REGION }}
+          role-session-name: GitHub-OIDC-TERRAFORM
+          role-duration-seconds: 1200
 
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v2

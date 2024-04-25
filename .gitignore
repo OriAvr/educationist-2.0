@@ -32,3 +32,6 @@ override.tf.json
 # Exclude CLI configuration files
 .terraformrc
 terraform.rc
+
+# Exclude files used for testing
+init-db.sql

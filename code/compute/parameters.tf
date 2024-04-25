@@ -22,6 +22,6 @@ data "aws_secretsmanager_secret_version" "db_password" {
   secret_id = data.aws_secretsmanager_secret.db_pass.id
 }
 
-data "aws_ssm_parameter" "db_endpoint" {
-  name = "/${var.tags.Environment}/my_db/db_endpoint"
+data "aws_ssm_parameter" "db_address" {
+  name = "/${var.tags.Environment}/my_db/db_address"
 }

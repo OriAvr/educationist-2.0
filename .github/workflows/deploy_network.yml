@@ -1,17 +1,21 @@
-name: "Terraform action"
+name: "Deploy network resources"
+
 on:
   push:
     branches:
       - ci-features
       - dev
   pull_request:
+
 permissions:
   id-token: write
   contents: read
   pull-requests: write
+
 env:
   TF_LOG: INFO
   AWS_REGION: ${{ secrets.AWS_REGION }}
+
 jobs:
   deploy:
     runs-on: ubuntu-latest
@@ -99,5 +103,5 @@ jobs:
         run: exit 1
 
       - name: Terraform Apply
-        if: github.ref == 'refs/heads/dev' && github.event_name == 'push'
+        #if: github.ref == 'refs/heads/dev' && github.event_name == 'push'
         run: terraform apply -auto-approve -input=false
