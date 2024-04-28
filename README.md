@@ -32,6 +32,16 @@ Step-by-step series of examples and explanations about how to get a development 
 
 1. **Clone the Repository**
    ```bash
-   git clone https://github.com/yourusername/yourprojectname.git
-   cd yourprojectname
+   git clone https://github.com/OriAvr/educationist-2.0.git
+   cd educationist-2.0.git
+   ```
+2. **Allow the script access for running your code.**
+
+   ```bash
+   chmod +x deploy_infrastructure.sh
+   ```
+
+3. **Run the script to build the infrastructure**
+   ```bash
+   deploy_infrastructure.sh
    ```
