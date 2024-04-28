@@ -2,15 +2,15 @@
 
 This Terraform code allows you to create the following resources:
 
-VPC
-Public subnets
-Private Subnets
-Internet Gateway
-Private EC2 instances
-Public EC2 instances
-Security Groups
-RDS instance
-S3 bucket(for static content)
+- VPC
+- Public subnets
+- Private Subnets
+- Internet Gateway
+- Private EC2 instances
+- Public EC2 instances
+- Security Groups
+- RDS instance
+- S3 bucket(for static content)
 
 By default, it is set up to include 1 public and 1 private subnet, as well as a separate private subnet for your DB.
 
